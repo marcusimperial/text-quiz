@@ -1,26 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useApp } from './context/Context'
+import Home from './components/Home';
+import Question from './components/Question';
+import Score from './components/Score';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    
+    const { game } = useApp();
+
+    return (
+        <div className="grid items-center justify-items-center min-h-screen md:h-screen bg-[url('./assets/669.jpg')] bg-center bg-cover overflow-auto p-4">
+            { !game?.active ? <Home /> : (!game?.complete ? <Question /> : <Score />) }
+        </div>  
+    )
+};
 
 export default App;

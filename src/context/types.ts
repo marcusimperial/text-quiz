@@ -4,20 +4,22 @@ export type props = {
     children?: ReactNode
 }
 
-export type GameData = {
-    active: boolean,
-    activity: string,
-    complete: boolean
-}
-
 export type QuestionData = {
     round_title?: string,
     is_correct?: boolean,
     stimulus?: string,
     order?: number,
-    user_answers?: Array<string>,
+    user_answers?: Array<any>,
     feedback?: string,
     questions?: Array<QuestionData>
+}
+
+export type GameData = {
+    active: boolean,
+    activity: string,
+    complete: boolean,
+    retry: boolean,
+    questions: Array<QuestionData>
 }
 
 export type AppContext = {
@@ -27,4 +29,6 @@ export type AppContext = {
     setQuestions: Dispatch<SetStateAction<Array<QuestionData>>>,
     question: QuestionData,
     setQuestion: Dispatch<SetStateAction<object>>,
+    clicked: boolean,
+    setClicked: Dispatch<SetStateAction<boolean>>
 }

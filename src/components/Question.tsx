@@ -1,15 +1,32 @@
-import { AiOutlineCheck, AiOutlineClose, AiOutlinePlayCircle } from 'react-icons/ai';
+import { AiOutlineCheck, AiOutlineClose, AiOutlinePlayCircle, AiOutlineClockCircle } from 'react-icons/ai';
 import { useApp } from '../context/Context';
+import { useState, useEffect } from 'react';
 
 const Question = () => {
 
     const { game, question, setQuestion } = useApp();
-    const markCorrect = () => setQuestion({ ...question, user_answers: [ true ] });
-    const markIncorrect = () => setQuestion({ ...question, user_answers: [ false ] });
+    const markCorrect = () => setQuestion({ ...question, user_answers: [ ...(question?.user_answers ?? []), true ] });
+    const markIncorrect = () => setQuestion({ ...question, user_answers: [ ...(question?.user_answers ?? []), false ] });
 
     const start = question?.stimulus?.split('*')?.[0]?.trim()?.toUpperCase();
     const emphasis = question?.stimulus?.split('*')?.[1]?.trim()?.toUpperCase();
     const end = question?.stimulus?.split('*')?.[2]?.trim()?.toUpperCase();
+
+    const limit: number = 10;
+    const [time, setTime] = useState<number>(limit);
+
+    const countdown = (count: number = 0) =>{
+        console.log('time left', count - 1);
+        if ((count - 1) > 0) return setTime(count - 1);
+        setQuestion({ ...question, user_answers: [ ...(question?.user_answers ?? []), null ] });
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => countdown(time), 1000);
+        return () => clearInterval(interval);
+    }, [time]);
+
+    useEffect(() => setTime(limit), [question]);
 
     return (
         <div className="grid items-center justify-items-center gap-2 w-full">
@@ -37,6 +54,12 @@ const Question = () => {
                     </div>
                 </div>
             </div>
+
+            <div className="flex items-center text-red/90 gap-1">
+                <AiOutlineClockCircle size="50px" />
+                <h1 className="text-4xl md:text-5xl">{time} SECONDS LEFT</h1>
+            </div>
+
 
         </div>
     )

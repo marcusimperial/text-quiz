@@ -1,4 +1,4 @@
-import { AiOutlineCheck, AiOutlineClose, AiOutlinePlayCircle, AiOutlineClockCircle } from 'react-icons/ai';
+import { AiOutlineCheck, AiOutlineClose, AiOutlineClockCircle } from 'react-icons/ai';
 import { useApp } from '../context/Context';
 import { useState, useEffect } from 'react';
 
@@ -11,18 +11,23 @@ const Question = () => {
     const start = question?.stimulus?.split('*')?.[0]?.trim()?.toUpperCase();
     const emphasis = question?.stimulus?.split('*')?.[1]?.trim()?.toUpperCase();
     const end = question?.stimulus?.split('*')?.[2]?.trim()?.toUpperCase();
+    // segmenting stimulus based on start, end, & emphasis to style accordingly 
+    // note: upper case text is style choice (due to font constraint)
 
     const [time, setTime] = useState<number>(limit);
     const [show, setShow] = useState<boolean>(false);
 
     const countdown = (count: number = 0) => {
         if ((count - 1) > 0) return setTime(count - 1);
+        // if time has not expired (=< 0), reduce time 
         setQuestion({ ...question, user_answers: [ null ] });
+        // if time has expired, mark question ans === null
     };
 
     useEffect(() => {
         const interval = setInterval(() => countdown(time), 1000);
         return () => clearInterval(interval);
+        // reducing timer @ 1s interval; clear func in case of reload
     }, [time]);
 
     useEffect(() => setTime(limit), [question]);
@@ -32,14 +37,17 @@ const Question = () => {
         if (show) setShow(false);
         const timeout = setTimeout(() => setShow(true), 500);
         return () => clearTimeout(timeout);
+        // presenting a new round @ 0.5s; clear t/o in case of reload 
     }, [round]);
 
     return (
         <div className="grid items-center justify-items-center gap-2 w-full">
-
-            <div className="flex flex-wrap place-content-center w-full items-center rounded-xl bg-yellow/90 text-blue p-4 gap-1">
-                <AiOutlinePlayCircle size="60px" />
+            <div className="flex flex-wrap place-content-center w-full items-center rounded-xl bg-yellow/90 text-blue p-4 gap-3">
                 <h1 className="text-6xl text-center">{question?.round_title?.toUpperCase()}</h1>
+                <div className="flex items-center text-red/90 gap-1">
+                    <AiOutlineClockCircle size="50px" />
+                    <h1 className="text-4xl md:text-5xl">{time} SECONDS LEFT</h1>
+                </div>
             </div>
 
             { show && <div className="grid w-full items-center justify-items-center bg-blue/30 text-black/90 rounded-lg gap-10 p-4">
@@ -60,13 +68,6 @@ const Question = () => {
                     </div>
                 </div>
             </div> }
-
-            <div className="flex items-center text-red/90 gap-1">
-                <AiOutlineClockCircle size="50px" />
-                <h1 className="text-4xl md:text-5xl">{time} SECONDS LEFT</h1>
-            </div>
-
-
         </div>
     )
 };

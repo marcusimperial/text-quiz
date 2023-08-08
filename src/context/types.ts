@@ -14,6 +14,8 @@ export type QuestionData = {
     questions?: Array<QuestionData>
 }
 
+// setting optional key to prevent setting default values
+
 export type GameData = {
     active: boolean,
     activity: string,
@@ -33,6 +35,8 @@ export type Payload = {
     }>
 }
 
+// setting optional key to prevent setting default values
+
 export type AppContext = {
     game: GameData,
     setGame: Dispatch<SetStateAction<GameData>>,
@@ -45,5 +49,6 @@ export type AppContext = {
     limit: number,
     setLimit: Dispatch<SetStateAction<number>>,
     round: string,
-    setRound: Dispatch<SetStateAction<string>>
+    setRound: Dispatch<SetStateAction<string>>,
+    payload: Payload
 }

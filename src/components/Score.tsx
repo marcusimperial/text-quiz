@@ -7,15 +7,20 @@ const Score = () => {
     const { game, setGame, questions } = useApp();
     
     const resetGame = () => setGame({ active: false, complete: false, activity: '', retry: false, questions: [] });
+    // reseting game back to initial state 
     
     const retryMistakes = () => {
         const retryQuesitons = questions.map(question => {
             if (question?.user_answers?.[0] !== question?.is_correct) return { ...question, user_answers: [] };
+            // if a question is incorrect OR is null, reset the ans array
             return { ...question };
         });
+         // mapping a new set of questions to retry 
         if (!(retryQuesitons.find(({ user_answers, is_correct}) => user_answers?.[0] !== is_correct))) return resetGame();
+        // if there are no questions to retry, reset the game => returns to home 
         setGame({ active: true, complete: false, activity: game?.activity, retry: true, questions: retryQuesitons });
-    }
+        // initialize updated game with pre-filled questions
+    };
 
     const groupQuestions = (data: Array<QuestionData> = questions, key: string = 'round_title') => {
         return data.reduce((prev: any, curr: any) => {
@@ -23,7 +28,8 @@ const Score = () => {
             if (!prev[property]) prev[property] = [];
             prev[property].push(curr);
             return prev;
-        }, {})  
+        }, {})
+        // grouping the 1D array based on key 'round_title' in order to display based on round
     };
 
     return (

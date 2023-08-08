@@ -2,11 +2,9 @@ import { Payload } from "./types";
 
 export const fetchData = async (): Promise<Payload> => {
     try {
-        const url = `/text-quiz-28f12/europe-west2/proxy/data`;
-        const res = await fetch(url);
-        console.log(res);
+        const res = await fetch(`/text-quiz-28f12/europe-west2/proxy/data`);
+        // fetching relative route; requesting to proxy server in /functions
         const data = await res.json();
-        console.log(data);
         return data;
     } catch (e) {
         console.error(e);

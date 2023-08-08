@@ -4,11 +4,11 @@
 
 ## Features
 
-Users are given a series of questions with english sentences. **In each question, they have to determine whether the emphasized text is gramatically correct or not.** Once the game ends, the results of their answers will be shown. 
+Users are given a series of questions with English sentences. **In each question, they have to determine whether the emphasized text is grammatically correct or not.** Once the game ends, the results of their answers will be shown. 
 
 ### Home Screen
 
-1. The app has two activities to choose from. Activity 1 consists of 1 round and 5 questions and Activity 2 consits of 2 rounds and 4 questions. 
+1. The app has two activities to choose from. Activity 1 consists of 1 round and 5 questions and Activity 2 consists of 2 rounds and 4 questions. 
 
 2. Users are given a time limit setting of "Normal" or fifteen (15) seconds for each question. They can also set a custom limit of "Slow" or thirty (30) seconds or "Speed" which gives them only five (5) seconds.
 
@@ -42,7 +42,7 @@ Users are given a series of questions with english sentences. **In each question
 
 * App data is centralized within the `/context` folder, particularly `Context.tsx`. Values such as the game state and the payload data are stored here. 
 
-* Each of the screens/components interact with these states. For example, the Home page updates the game state ("to start a new game"), the Question page updates the question state ("to get the next question"), the Score marks a game as complete, and so on...
+* Each of the screens/components interacts with these states. For example, the Home page updates the game state ("to start a new game"), the Question page updates the question state ("to get the next question"), the Score marks a game as complete, and so on...
 
 * As reflected in the comments in `App.tsx`, the app doesn't use a routing system such as react-router-dom due to the intrinsic nature of the game. The app is instead dependent on the `game` state on which of the three screens to display. This is to avoid having to run a redundant state check on every screen. 
 

@@ -4,21 +4,20 @@ import { useState, useEffect } from 'react';
 
 const Question = () => {
 
-    const { game, question, setQuestion } = useApp();
-    const markCorrect = () => setQuestion({ ...question, user_answers: [ ...(question?.user_answers ?? []), true ] });
-    const markIncorrect = () => setQuestion({ ...question, user_answers: [ ...(question?.user_answers ?? []), false ] });
+    const { question, setQuestion, limit, round } = useApp();
+    const markCorrect = () => setQuestion({ ...question, user_answers: [ true ] });
+    const markIncorrect = () => setQuestion({ ...question, user_answers: [ false ] });
 
     const start = question?.stimulus?.split('*')?.[0]?.trim()?.toUpperCase();
     const emphasis = question?.stimulus?.split('*')?.[1]?.trim()?.toUpperCase();
     const end = question?.stimulus?.split('*')?.[2]?.trim()?.toUpperCase();
 
-    const limit: number = 10;
     const [time, setTime] = useState<number>(limit);
+    const [show, setShow] = useState<boolean>(false);
 
-    const countdown = (count: number = 0) =>{
-        console.log('time left', count - 1);
+    const countdown = (count: number = 0) => {
         if ((count - 1) > 0) return setTime(count - 1);
-        setQuestion({ ...question, user_answers: [ ...(question?.user_answers ?? []), null ] });
+        setQuestion({ ...question, user_answers: [ null ] });
     };
 
     useEffect(() => {
@@ -28,15 +27,22 @@ const Question = () => {
 
     useEffect(() => setTime(limit), [question]);
 
+    useEffect(() => {
+        if (!round) return;
+        if (show) setShow(false);
+        const timeout = setTimeout(() => setShow(true), 500);
+        return () => clearTimeout(timeout);
+    }, [round]);
+
     return (
         <div className="grid items-center justify-items-center gap-2 w-full">
 
             <div className="flex flex-wrap place-content-center w-full items-center rounded-xl bg-yellow/90 text-blue p-4 gap-1">
                 <AiOutlinePlayCircle size="60px" />
-                <h1 className="text-6xl text-center">{game?.activity?.toUpperCase()} {question?.round_title?.toUpperCase()}</h1>
+                <h1 className="text-6xl text-center">{question?.round_title?.toUpperCase()}</h1>
             </div>
 
-            <div className="grid w-full items-center justify-items-center bg-blue/30 text-black/90 rounded-lg gap-10 p-4">
+            { show && <div className="grid w-full items-center justify-items-center bg-blue/30 text-black/90 rounded-lg gap-10 p-4">
                 <h1 className="text-4xl">QUESTION {question?.order}</h1>
                 <div className="flex flex-wrap items-center place-content-center gap-3">
                     <h1 className="text-6xl text-center">{start}</h1>
@@ -53,7 +59,7 @@ const Question = () => {
                         <h1 className="text-5xl">INCORRECT</h1>
                     </div>
                 </div>
-            </div>
+            </div> }
 
             <div className="flex items-center text-red/90 gap-1">
                 <AiOutlineClockCircle size="50px" />

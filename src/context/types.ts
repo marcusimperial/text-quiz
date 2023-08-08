@@ -22,13 +22,28 @@ export type GameData = {
     questions: Array<QuestionData>
 }
 
+export type Payload = {
+    status: boolean,
+    name?: string,
+    heading?: string,
+    activities?: Array<{
+        activity_name: string,
+        order: number,
+        questions: Array<QuestionData>
+    }>
+}
+
 export type AppContext = {
     game: GameData,
     setGame: Dispatch<SetStateAction<GameData>>,
     questions: Array<QuestionData>,
     setQuestions: Dispatch<SetStateAction<Array<QuestionData>>>,
     question: QuestionData,
-    setQuestion: Dispatch<SetStateAction<object>>,
+    setQuestion: Dispatch<SetStateAction<QuestionData>>,
     clicked: boolean,
-    setClicked: Dispatch<SetStateAction<boolean>>
+    setClicked: Dispatch<SetStateAction<boolean>>,
+    limit: number,
+    setLimit: Dispatch<SetStateAction<number>>,
+    round: string,
+    setRound: Dispatch<SetStateAction<string>>
 }

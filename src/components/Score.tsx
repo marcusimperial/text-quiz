@@ -5,8 +5,17 @@ import { QuestionData } from '../context/types';
 const Score = () => {
 
     const { game, setGame, questions } = useApp();
+    
     const resetGame = () => setGame({ active: false, complete: false, activity: '', retry: false, questions: [] });
-    const retryMistakes = () => setGame({ active: true, complete: false, activity: game?.activity, retry: true, questions: game?.questions });
+    
+    const retryMistakes = () => {
+        const retryQuesitons = questions.map(question => {
+            if (question?.user_answers?.[0] !== question?.is_correct) return { ...question, user_answers: [] };
+            return { ...question };
+        });
+        if (!(retryQuesitons.find(({ user_answers, is_correct}) => user_answers?.[0] !== is_correct))) return resetGame();
+        setGame({ active: true, complete: false, activity: game?.activity, retry: true, questions: retryQuesitons });
+    }
 
     const groupQuestions = (data: Array<QuestionData> = questions, key: string = 'round_title') => {
         return data.reduce((prev: any, curr: any) => {

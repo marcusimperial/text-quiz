@@ -2,6 +2,7 @@ import { useApp } from './context/Context'
 import Home from './components/Home';
 import Question from './components/Question';
 import Score from './components/Score';
+// import './Proxy';
 
 const App = () => {
     
